@@ -3,50 +3,69 @@
 {% block title %} 회원가입 {% endblock %} 
 
 {% block content %}
-<h1 style="text-align: center; margin: 100px">회원가입</h1>
+<h1 style="text-align: center; margin: 100px"> 회원가입 </h1>
 <form class="form-area" method="post" action="/sign-up/">
-{% csrf_token %}
+  {% csrf_token %}
   <div class="container">
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="account_id" placeholder="account_id" />
-      <label for="floatingInput">ID</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="username" 
+        placeholder="username"
+        name="username" />
+      <label for="username">ID</label>
     </div>
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="name" placeholder="name" />
-      <label for="floatingInput">Name</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="name" 
+        placeholder="name"
+        name="name" />
+      <label for="name">Name</label>
     </div>
     <div class="form-floating mb-3">
       <input
         type="text"
         class="form-control"
         id="email"
-        placeholder="email@domain.com"
+        placeholder="email"
+        name="email"
       />
-      <label for="floatingEmail">Email</label>
+      <label for="email">Email</label>
     </div>
     <div class="form-floating mb-3">
       <input
         type="password"
         class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
+        id="password"
+        placeholder="password"
+        name="password"
       />
-      <label for="floatingPassword">Password</label>
+      <label for="password">Password</label>
     </div>
     <div class="form-floating mb-3">
       <input
         type="password"
         class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
+        id="password2"
+        placeholder="password2"
+        name="password2"
       />
-      <label for="floatingPassword">Confirm Password</label>
+      <label for="password2">Confirm Password</label>
     </div>
     <div class="buttons">
       <div class="d-grid gap-3 d-md-block">
-        <button class="btn btn-primary" type="submit">회원가입</button>
+        <button class="btn btn-primary" type="submit">확인</button>
+        <a href="/sign-in" class="btn btn-secondary">취소</a>
       </div>
     </div>
+    {% if error %}
+      <div class="alert alert-danger" role="alert" style="margin-top: 15px;">
+        {{ error }}
+      </div>
+    {% endif %}
   </div>
 </form>
 {% endblock %}
