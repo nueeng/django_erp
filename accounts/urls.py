@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sign-in/', views.sign_in_view, name='sign-in'),
+    path('sign-in/', views.sign_in_view, name='sign-in'), # name이 뭐지?
+    path('sign-up/', views.sign_up_view, name='sign-up'),
 ]
