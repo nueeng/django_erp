@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 
 
 # Create your views here.
-def home(request):
+def home(request): # 유저 검증해서 상품리스트로 우선 보내기? 홈.. 따라해놨음 없애도 되는건지 잘 모르겠다.
     user = request.user.is_authenticated
     if user:
         return redirect('/product_list')
     else:
         return redirect('/sign-in')
 
-def product_list(request): # 리스트
+def product_list(request): # 상품리스트
     if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
