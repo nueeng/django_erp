@@ -1,6 +1,40 @@
 {% extends 'base.html' %} 
 
-{% block title %} 회원가입 {% endblock %} 
+{% block title %} 입고 {% endblock %} 
 
 {% block content %}
+<h1 style="margin: 20px;">입고</h1>
+<form>
+    <div class="create_form">
+      <div class="mb-3">
+        <label for="" class="form-label">상품 코드</label>
+        <input type="text" class="form-control" id="">
+      </div>
+      <div class="mb-3">
+        <label for="" class="form-label">입고 수량</label>
+        <input type="text" class="form-control" id="">
+      </div>
+      <div class="mb-3">
+        <label for="" class="form-label">입고 날짜</label>
+        <input type="date" class="form-control" id="">
+      </div>
+      <div class="mb-3">
+        <label for="" class="form-label">입고 가격</label>
+        <input type="number" class="form-control" id="" aria-describedby="price">
+        <div id="" class="form-text">, 없이 숫자만 적어주세요</div>
+      </div>
+      <select class="form-select" aria-label="Default select example">
+        <option selected>Size</option>
+        <option value="1">S</option>
+        <option value="2">M</option>
+        <option value="3">L</option>
+        <option value="4">XL</option>
+        <option value="5">Free</option>
+      </select>
+      <div class=buttons>
+        <button type="submit" class="btn btn-primary">등록</button>
+      </div>
+    </div>
+  </div>
+  </form>
 {% endblock %}
