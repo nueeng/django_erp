@@ -11,4 +11,8 @@ def home(request):
     
 def erp_home(request):
     if request.method == 'GET':
-        return render(request, 'erp/inventory.html')
+        user = request.user.is_authenticated
+        if user:
+            return render(request, 'erp/inventory.html')
+        else:
+            return redirect('/sign-in')

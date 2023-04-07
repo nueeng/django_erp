@@ -15,17 +15,25 @@ def sign_in_view(request):
         me = auth.authenticate(request, username=username, password=password)
         if me is not None:
             auth.login(request, me)
-            return HttpResponse(f"{me.username}가 로그인에 성공!")
+            return render(request, 'erp/inventory.html')
         else:
             return redirect('/sign-in')
     
     elif request.method == 'GET':
-        return render(request, 'accounts/sign_in.html')
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+            return render(request, 'accounts/sign_in.html')
     
 
 def sign_up_view(request):
     if request.method == 'GET':
-        return render(request, 'accounts/sign_up.html')
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:    
+            return render(request, 'accounts/sign_up.html')
     elif request.method == 'POST':
         username = request.POST.get('username', '')
         name = request.POST.get('name', '')
