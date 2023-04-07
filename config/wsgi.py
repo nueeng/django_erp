@@ -1,5 +1,5 @@
 """
-WSGI config for my_project project.
+WSGI config for erp project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
