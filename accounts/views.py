@@ -3,6 +3,7 @@ from .models import AccountModel
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -44,3 +45,8 @@ def sign_up_view(request):
             else:
                 AccountModel.objects.create_user(username=username, password=password, email=email, name=name) # create_user도 장고의 auth기본제공함수
                 return redirect('/sign-in') # render랑 redirect랑 어떤식으로 다른건지.?
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect("/")
