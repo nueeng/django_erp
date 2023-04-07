@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %} 로그인 {% endblock %}
+{% block title %} 로그인 {% endblock %} 
 
 {% block content %}
 <h1 style="text-align: center; margin: 100px">로그인</h1>
-<form>
+<form class="form-area" action="/sign-in/" method="post">
+  {% csrf_token %}
   <div class="container">
     <div class="form-floating mb-3">
       <input
-        type="email"
+        type="text"
         class="form-control"
-        id="floatingInput"
-        placeholder="name@example.com"
+        id="account_id"
+        placeholder="account_id"
       />
       <label for="floatingInput">ID</label>
     </div>
@@ -26,7 +27,7 @@
     </div>
     <div class="buttons">
       <div class="d-grid gap-2 d-md-block">
-        <button class="btn btn-primary" type="button">로그인</button>
+        <button type="submit" class="btn btn-primary">로그인</button>
         <button class="btn btn-primary" type="button">회원가입</button>
       </div>
     </div>
