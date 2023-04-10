@@ -15,29 +15,9 @@ def home(request): # 유저 검증해서 상품리스트로 우선 보내기? �
 
 @login_required
 def product_list(request): # 상품리스트
-    # if request.method == 'GET': 창호 튜터님 방식
-    #     """상품 조회"""
-    #     products = Product.objects.all()
-    #     data = []
-
-    #     for product in products:
-    #         data.append({
-    #             "코드": product.code,
-    #             "상품명": product.name,
-    #             "상품설명": product.description,
-    #             "가격": product.price,
-    #             "사이즈": product.size,
-    #         })
-    #   return HttpResponse(data)
-        """
-        django rest framework 사용 시
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-        """
-        
         user = request.user.is_authenticated
 
-        # 창호튜터님이 렌더링 피드백!
+        # 창호튜터님이 렌더링 피드백
         products = Product.objects.all() # queryset으로 받은걸 dictionary형으로 3번째 인자인 context로 넣어줌
 
         if user:
@@ -164,9 +144,14 @@ def outbound_create(request): # 출고
 def inventory_view(request): # 재고현황
     if request.method == 'GET':
         user = request.user.is_authenticated
+
+        products = Product.objects.all()
+        inbound = Inbound.objects.all()
+        outbound = Outbound.objects.all()
         inventories = Inventory.objects.all()
+        
         if user:
-            return render(request, 'erp/inventory.html', {'inventory':inventories})
+            return render(request, 'erp/inventory.html', {'product':products,'inventory':inventories,'inbound': inbound, 'outbound': outbound})
         else:
             return redirect('/sign-in')
     """

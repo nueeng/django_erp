@@ -12,17 +12,17 @@
             <th scope="col">입고</th>
             <th scope="col">출고</th>
             <th scope="col">현재고</th>
-            <th scope="col">금액</th>
+            <th scope="col">차액</th>
           </tr>
         </thead>
         <tbody>
-          {% for inv in inventory %}
+          {% for pro in product %}
           <tr>
-            <td>{{ inv.code }}</td>
+            <td>{{ pro.code }}</td>
             <td>{{ inbound.amount }}</td>
-            <td>{{ outbound.amount }}</td>
-            {% comment %} <td>{{ inv.inbound.amount - inv.outbound.amount }}</td>
-            <td>{{ inv.inbound.price - inv.outbound.price }}</td> {% endcomment %}
+            <td>{{ outbound }}</td>
+            <td>{{ inventory.amount }}</td>
+            <td>{{ pro.price }}</td>
           </tr>
           {% endfor %}
         </tbody>
