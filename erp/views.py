@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm # form?
+# from django.contrib.auth.forms import UserCreationForm, AuthenticationForm # form?
 from django.http import HttpResponse
 
 from erp.models import Product, Inbound, Outbound, Inventory
 
 # Create your views here.
-def home(request): # 유저 검증해서 상품리스트로 우선 보내기? 홈.. 따라해놨음 없애도 되는건지 잘 모르겠다.
+def home(request): # 유저 검증해서 상품리스트로 우선 보내기? 따라해놨음 없애도 되는건지 잘 모르겠다.
     user = request.user.is_authenticated
     if user:
         return redirect('/product_list')
@@ -15,15 +15,6 @@ def home(request): # 유저 검증해서 상품리스트로 우선 보내기? �
 
 @login_required
 def product_list(request): # 상품리스트
-    if request.method == 'GET':
-        user = request.user.is_authenticated
-        if user:
-            return render(request, 'erp/product_list.html')
-        else:
-            return redirect('/sign-in')
-
-@login_required
-def product_create(request): # 상품등록
     if request.method == 'GET':
         """상품 조회"""
         products = Product.objects.all()
@@ -43,7 +34,16 @@ def product_create(request): # 상품등록
         return Response(serializer.data)
         """
         # return HttpResponse(data)
+        
+        user = request.user.is_authenticated
+        if user:
+            return render(request, 'erp/product_list.html')
+        else:
+            return redirect('/sign-in')
 
+@login_required
+def product_create(request): # 상품등록
+    if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
             return render(request, 'erp/product_create.html')
@@ -60,6 +60,9 @@ def product_create(request): # 상품등록
 
         if Product.objects.filter(code=code).exists(): # 새로운 상품코드를 써도 이미 존재한다고 뜨는 버그..
             return HttpResponse("이미 존재하는 상품코드 입니다.") # 또 input tag에 name이 빠져서 안됬었다.
+
+        if size == "Size": # 지금은 선택방식이니까 가능하지, 더 좋은 코드 찾아보기
+            return HttpResponse("Size를 골라주세요.")
 
         product = Product.objects.create(
             code = code,
@@ -85,16 +88,22 @@ def inbound_create(request): # 입고
             return render(request, 'erp/inbound_create.html')
         else:
             return redirect('/sign-in')
-        
+    
+    # elif request.method == 'POST':
+
     code = request.POST.get("code", "")
-    product = Product.objects.get(code=code)
 
     try:
         product = Product.objects.get(code=code)
     except Product.DoesNotExist:
         return HttpResponse("존재하지 않는 상품코드 입니다.")
     
-    amount = int(request.POST.get("amount", 0)) # 밑에서 += 할꺼니까 정수처리
+    amount = request.POST.get("amount", 0) # 밑에서 += 할꺼니까 정수처리
+    if not amount.isdigit():
+        return HttpResponse("잘못 된 수량을 입력했습니다.")
+    
+    amount = int(amount)
+
     price = int(request.POST.get("price", 0))
 
     Inbound.objects.create(
@@ -107,8 +116,6 @@ def inbound_create(request): # 입고
     product.inventory.save()
 
     return HttpResponse("입고 완료")
-    
-    print(product)
     # 입고 기록 생성
 
     # 입고 수량 조정
@@ -126,7 +133,7 @@ def outbound_create(request): # 출고
     # 재고 수량 조정
 
     code = request.POST.get("code", "")
-    product = Product.objects.get(code=code)
+    amount = int(request.POST.get("amount", 0)) # 아래 음수 조건문 확인하기 위해 입고와 달리 먼저 선언해줘야했음 ....  
 
     try:
         product = Product.objects.get(code=code)
@@ -135,8 +142,7 @@ def outbound_create(request): # 출고
     
     if product.inventory.amount < amount:
         return HttpResponse("출고 수량은 현재 수량보다 많을 수 없습니다.")
-    
-    amount = int(request.POST.get("amount", 0)) # 밑에서 += 할꺼니까 정수처리
+
     price = int(request.POST.get("price", 0))
 
     Outbound.objects.create(

@@ -7,6 +7,9 @@ class Product(models.Model):
     상품 모델입니다.
     상품 코드, 상품 이름, 상품 설명, 상품 가격, 사이즈 필드를 가집니다.
     """
+    class Meta:
+        db_table = "product"
+
     SIZES = ( # 이런 상수는 대문자로도 많이 씀
         ('S', 'Small'),
         ('M', 'Medium'),
@@ -39,6 +42,9 @@ class Inventory(models.Model):
     상품, 수량 필드를 작성합니다.
     작성한 Product 모델을 OneToOne 관계로 작성합시다.
     """ # 노션 코드복사할 때 조심하자 탭으로 되어있었음
+    class Meta:
+        db_table = "inventory"
+
     product = models.OneToOneField(Product, on_delete=models.CASCADE) #  원래는 related_name= 지정해줘야함 역참조?? CASCADE는 product가 사라지면 이거도 날려버리겠다. 삭제되더라도 유지해야할 경우에는 setNULL을 사용
     # product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=True) # 이 코드가 위의 코드랑 같은 코드임!
     amount = models.PositiveIntegerField("상품수량") # 이것도 verbose 네임
@@ -48,6 +54,9 @@ class Inbound(models.Model):
     입고 모델입니다.
     상품, 수량, 입고 날짜, 금액 필드를 작성합니다.
     """
+    class Meta:
+        db_table = "inbound"
+
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField("입고수량")
     created_at = models.DateTimeField(auto_now_add=True) # 데이터가 생성된 순간을 기록하겠다고 이해하면 . 
@@ -59,6 +68,9 @@ class Outbound(models.Model):
     출고 모델입니다.
     상품, 수량, 입고 날짜, 금액 필드를 작성합니다.
     """
+    class Meta:
+        db_table = "outbound"
+
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField("출고수량")
     created_at = models.DateTimeField(auto_now_add=True) # 데이터가 생성된 순간을 기록하겠다고 이해하면 . 
