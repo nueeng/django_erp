@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect # redirect 추가
 from .models import AccountModel
-from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required

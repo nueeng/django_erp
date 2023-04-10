@@ -16,27 +16,15 @@
           </tr>
         </thead>
         <tbody>
+          {% for inv in inventory %}
           <tr>
-            <th scope="row">1</th>
-            <td>{{ product.code }}</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
+            <td>{{ inv.code }}</td>
+            <td>{{ inbound.amount }}</td>
+            <td>{{ outbound.amount }}</td>
+            {% comment %} <td>{{ inv.inbound.amount - inv.outbound.amount }}</td>
+            <td>{{ inv.inbound.price - inv.outbound.price }}</td> {% endcomment %}
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>{{ inventory.amount }}</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry the Bird</td>
-            <td>Larry the Bird</td>
-            <td>@twitter</td>
-            <td>@twitter</td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
