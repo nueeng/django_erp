@@ -13,8 +13,8 @@ class Product(models.Model):
         ('L', 'Large'),
         ('F', 'Free'),
     )
-    code = models.CharField("코드", max_length=20) # 한글로된 str은 verbose name이라고함 없어도 되는데 있으면 admin에서 한글로 보여서 편함
-    name = models.CharField("코드", max_length=20)
+    code = models.CharField("코드", max_length=20, unique=True) # 상품 코드는 unique True로 지정!
+    name = models.CharField("상품이름", max_length=20) # 한글로된 str은 verbose name이라고함 없어도 되는데 있으면 admin에서 한글로 보여서 편함
     description = models.TextField("상품설명")
     price = models.IntegerField() # PositiveIntegerField로 하면 양수로 가능
     size = models.CharField(choices=SIZES, max_length=10) # XL 추가 시 에러나니까 넉넉하게 잡아줘도 됨
@@ -25,15 +25,15 @@ class Product(models.Model):
     두번째 요소는 사용자가 볼 수 있는 레이블(옵션의 이름)이 됩니다.
     """
 
-    def __str__(self):
-        pass
-        return self.code
+    # def __str__(self):
+    #     pass
+    #     return self.code
 
-    def save(self, *args, **kwargs):
-        pass
-        # 생성될 때 stock quantity를 0으로 초기화 로직
+    # def save(self, *args, **kwargs):
+    #     pass
+    #     # 생성될 때 stock quantity를 0으로 초기화 로직
 
-class Invetory(models.Model):
+class Inventory(models.Model):
     """
     창고의 제품과 수량 정보를 담는 모델입니다.
     상품, 수량 필드를 작성합니다.

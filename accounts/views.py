@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect # redirect 추가
 from .models import AccountModel
 from django.http import HttpResponse
-from django.contrib.auth import get_user_model
 from django.contrib import auth
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -29,7 +29,7 @@ def sign_in_view(request):
 
 def sign_up_view(request):
     if request.method == 'GET':
-        user = request.user.is_authenticated
+        user = request.user.is_authenticated  # set password, save 로 암호화하는 방법도 있음
         if user:
             return redirect('/')
         else:    
