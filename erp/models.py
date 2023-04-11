@@ -21,20 +21,6 @@ class Product(models.Model):
     description = models.TextField("상품설명")
     price = models.IntegerField() # PositiveIntegerField로 하면 양수로 가능
     size = models.CharField(choices=SIZES, max_length=10) # XL 추가 시 에러나니까 넉넉하게 잡아줘도 됨
-    """
-    choices 매개변수는 Django 모델 필드에서 사용하는 매개변수 중 하나로 
-    해당 필드에서 선택 가능한 옵션을 지정하는 역할을 합니다. 
-    변수를 통해 튜플 리스트를 받으면 첫번째 요소는 실제 DB에 저장되는 값이 되고,
-    두번째 요소는 사용자가 볼 수 있는 레이블(옵션의 이름)이 됩니다.
-    """
-
-    # def __str__(self):
-    #     pass
-    #     return self.code
-
-    # def save(self, *args, **kwargs):
-    #     pass
-    #     # 생성될 때 stock quantity를 0으로 초기화 로직
 
 class Inventory(models.Model):
     """

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from erp.models import Product, Inbound, Outbound, Inventory
 from django.db.models import Sum
+
 # Create your views here.
 def home(request): # 유저 검증해서 상품리스트로 우선 보내기? 따라해놨음 없애도 되는건지 잘 모르겠다.
     user = request.user.is_authenticated
@@ -56,12 +57,14 @@ def product_create(request): # 상품등록
             size = size,
         )
 
+
         Inventory.objects.create(
             product = product,
             amount = 0,
         )
 
-        return render(request, 'erp/product_list.html')
+        return redirect("/product_list") # 아래코드하면 렌더링안됨, 리다이렉트는 되네?
+        # return render(request, 'erp/product_list.html',{'product':product})
         
 @login_required
 # @transaction.atomic 나중에 공부..
@@ -148,18 +151,25 @@ def inventory_view(request): # 재고현황
         user = request.user.is_authenticated
 
         products = Product.objects.all()
-        data = []
-        for product in products:
-            data.append({
-                'product':product, # aggregate() -> 결과 queryset?
-                # 'inbound_amount':product.inbound.all().aggregate(Sum("amount")),
-                'outbound_amount':product.outbound.all().aggregate(Sum("amount")),
-            })
+        inbound = Inbound.objects.all()
+        outbound = Outbound.objects.all()
+        inventory = Inventory.objects.all() # 이게 맞고, html template에는 {{ pro.inventory.amount }} !!
 
-            print(data)
+        
+
+        # data = []
+        # for product in products:
+        #     data.append({
+        #         'product':product, # aggregate() -> 결과 queryset?
+        #         # 'inbound_amount':product.inbound.all().aggregate(inbound_amount=Sum('amount')),
+        #         # 'outbound_amount':product.outbound.all().aggregate(outbound_amount=Sum('amount')),
+        #         'inbound':inbound,
+        #         'outbound':outbound,
+        #         'inventory':inventory,
+        #     })
         
         if user:
-            return render(request, 'erp/inventory.html', {'product':products,})
+            return render(request, 'erp/inventory.html', {'product':products,'inventory':inventory})
         else:
             return redirect('/sign-in')
     """
