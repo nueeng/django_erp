@@ -15,7 +15,7 @@ def sign_in_view(request):
         me = auth.authenticate(request, username=username, password=password)
         if me is not None:
             auth.login(request, me)
-            product = Product.objects.all()
+            product = Product.objects.all() # 드디어 외워썼다
             return render(request, 'erp/product_list.html', {'product':product})
         else:
             return redirect('/sign-in')
