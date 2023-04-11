@@ -13,7 +13,7 @@
             <th scope="col">입고</th>
             <th scope="col">출고</th>
             <th scope="col">현재고</th>
-            <th scope="col">차액</th>
+            {% comment %} <th scope="col">차액</th> {% endcomment %}
           </tr>
         </thead>
         <tbody>
@@ -21,9 +21,9 @@
           <tr>
             <td>{{ pro.code }}</td>
             <td>{{ pro.inbound.amount }}</td>
-            <td>{{ pro.outbound.amount }}</td>
+            <td>{{ pro.amount }}</td>
             <td>{{ pro.inventory.amount }}</td>
-            <td>{{ pro.price|sub:pro.code }}</td>
+            {% comment %} <td>{{ pro.price|sub:pro.code }}</td> {% endcomment %}
           </tr>
           {% endfor %}
         </tbody>

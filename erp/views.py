@@ -151,11 +151,7 @@ def inventory_view(request): # 재고현황
         user = request.user.is_authenticated
 
         products = Product.objects.all()
-        inbound = Inbound.objects.all()
-        outbound = Outbound.objects.all()
-        inventory = Inventory.objects.all() # 이게 맞고, html template에는 {{ pro.inventory.amount }} !!
-
-        
+        inventory = Inventory.objects.all() # html template에는 {{ pro.inventory.amount }} 
 
         # data = []
         # for product in products:
@@ -167,9 +163,11 @@ def inventory_view(request): # 재고현황
         #         'outbound':outbound,
         #         'inventory':inventory,
         #     })
+        #     print(data)
+
         
         if user:
-            return render(request, 'erp/inventory.html', {'product':products,'inventory':inventory})
+            return render(request, 'erp/inventory.html', {'product':products,'inventory':inventory,})
         else:
             return redirect('/sign-in')
     """
