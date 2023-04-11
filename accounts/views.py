@@ -3,6 +3,7 @@ from .models import AccountModel
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from erp.models import Product
 
 # Create your views here.
 
@@ -14,7 +15,8 @@ def sign_in_view(request):
         me = auth.authenticate(request, username=username, password=password)
         if me is not None:
             auth.login(request, me)
-            return render(request, 'erp/product_list.html')
+            product = Product.objects.all()
+            return render(request, 'erp/product_list.html', {'product':product})
         else:
             return redirect('/sign-in')
     

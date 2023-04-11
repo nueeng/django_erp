@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from erp.models import Product, Inbound, Outbound, Inventory
-
+from django.db.models import Sum
 # Create your views here.
 def home(request): # 유저 검증해서 상품리스트로 우선 보내기? 따라해놨음 없애도 되는건지 잘 모르겠다.
     user = request.user.is_authenticated
@@ -17,7 +17,7 @@ def home(request): # 유저 검증해서 상품리스트로 우선 보내기? �
 def product_list(request): # 상품리스트
         user = request.user.is_authenticated
 
-        # 창호튜터님이 렌더링 피드백
+        # 튜터님이 렌더링 피드백
         products = Product.objects.all() # queryset으로 받은걸 dictionary형으로 3번째 인자인 context로 넣어줌
 
         if user:
@@ -142,16 +142,24 @@ def outbound_create(request): # 출고
 
 @login_required
 def inventory_view(request): # 재고현황
+
     if request.method == 'GET':
+
         user = request.user.is_authenticated
 
         products = Product.objects.all()
-        inbound = Inbound.objects.all()
-        outbound = Outbound.objects.all()
-        inventories = Inventory.objects.all()
+        data = []
+        for product in products:
+            data.append({
+                'product':product, # aggregate() -> 결과 queryset?
+                # 'inbound_amount':product.inbound.all().aggregate(Sum("amount")),
+                'outbound_amount':product.outbound.all().aggregate(Sum("amount")),
+            })
+
+            print(data)
         
         if user:
-            return render(request, 'erp/inventory.html', {'product':products,'inventory':inventories,'inbound': inbound, 'outbound': outbound})
+            return render(request, 'erp/inventory.html', {'product':products,})
         else:
             return redirect('/sign-in')
     """

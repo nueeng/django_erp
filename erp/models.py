@@ -57,7 +57,7 @@ class Inbound(models.Model):
     class Meta:
         db_table = "inbound"
 
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField("입고수량")
     created_at = models.DateTimeField(auto_now_add=True) # 데이터가 생성된 순간을 기록하겠다고 이해하면 . 
     # updated_at = models.DateTimeField(auto_now=True) # add가 빠지면 수정할 때도 같이 기록됨
@@ -71,7 +71,7 @@ class Outbound(models.Model):
     class Meta:
         db_table = "outbound"
 
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField("출고수량")
     created_at = models.DateTimeField(auto_now_add=True) # 데이터가 생성된 순간을 기록하겠다고 이해하면 . 
     # updated_at = models.DateTimeField(auto_now=True) # add가 빠지면 수정할 때도 같이 기록됨
