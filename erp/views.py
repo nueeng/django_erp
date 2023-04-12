@@ -151,23 +151,20 @@ def inventory_view(request): # 재고현황
         user = request.user.is_authenticated
 
         products = Product.objects.all()
-        inventory = Inventory.objects.all() # html template에는 {{ pro.inventory.amount }} 
 
-        # data = []
-        # for product in products:
-        #     data.append({
-        #         'product':product, # aggregate() -> 결과 queryset?
-        #         # 'inbound_amount':product.inbound.all().aggregate(inbound_amount=Sum('amount')),
-        #         # 'outbound_amount':product.outbound.all().aggregate(outbound_amount=Sum('amount')),
-        #         'inbound':inbound,
-        #         'outbound':outbound,
-        #         'inventory':inventory,
-        #     })
-        #     print(data)
+        data_list = []
+        for product in products:
+            data_list.append({
+                'product':product, # aggregate() -> 결과 dictionary _set 역참조
+                'inbound_amount':product.inbound_set.all().aggregate(inbound_amount=Sum('amount'))['inbound_amount'],
+                'outbound_amount':product.outbound_set.all().aggregate(outbound_amount=Sum('amount'))['outbound_amount'],
 
-        
+            })
+        # none 처리 
+        # 사용자 / 게시글 게시글 -> 작성자 fk 게시글에서 작성자 정참조 / 내가 작성한걸 찾는건 역참조
+        # _set  역참조할때 붙여주는 넹밍 related name=이 없을때 사용하는 것
         if user:
-            return render(request, 'erp/inventory.html', {'product':products,'inventory':inventory,})
+            return render(request, 'erp/inventory.html', {'data_list':data_list})
         else:
             return redirect('/sign-in')
     """

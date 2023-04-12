@@ -3,30 +3,29 @@
 {% block title %} 재고현황 {% endblock %} 
 
 {% block content %}
-{% load mathfilters %}
 <h1 style="margin: 20px;">재고현황</h1>
 <div style="margin: 0 20px;">
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">상품 코드</th>
-            <th scope="col">입고</th>
-            <th scope="col">출고</th>
-            <th scope="col">현재고</th>
-            {% comment %} <th scope="col">차액</th> {% endcomment %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for pro in product %}
-          <tr>
-            <td>{{ pro.code }}</td>
-            <td>{{ pro.inbound.amount }}</td>
-            <td>{{ pro.amount }}</td>
-            <td>{{ pro.inventory.amount }}</td>
-            {% comment %} <td>{{ pro.price|sub:pro.code }}</td> {% endcomment %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">상품 코드</th>
+          <th scope="col">입고</th>
+          <th scope="col">출고</th>
+          <th scope="col">현재고</th>
+          {% comment %} <th scope="col">차액</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in data_list %}
+        <tr>
+          <td>{{ data.product.code }}</td>
+          <td>{{ data.inbound_amount }}</td>
+          <td>{{ data.outbound_amount }}</td>
+          <td>{{ data.product.inventory.amount }}</td>
+          {% comment %} <td>{{ pro.price|sub:pro.code }}</td> {% endcomment %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
